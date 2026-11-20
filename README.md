@@ -222,30 +222,7 @@ Assetlume has no login, but each visitor's data is private.
 
 Every dashboard number is calculated by Assetlume's own code on the server. Each item names where its inputs come from and which published method it follows. Where Assetlume adds its own choice, it says so. Borrowed methods are always described as "based on", never as an official rating or a suitability assessment. The full details are in [`docs/architecture.md`](docs/architecture.md), section 7.
 
-| Item | Inputs and source | Method source | What Assetlume calculates |
-|---|---|---|---|
-| `totalPortfolioValue` | Quantities: questionnaire form. Prices: FMP (stocks), CoinGecko (crypto). Rates: ECB | — | Quantity × price per holding, summed in USD, converted to the display currency |
-| `portfolioChange` | Stored prices: FMP, CoinGecko | — | Change since the previous price date; gain or loss against price paid |
-| `topHoldings` | Holding values. Names: FMP, CoinGecko | — | Holdings ranked by value, with their share |
-| `assetAllocation` | Holding values; asset type from Assetlume's asset records | [SEC Investor.gov][sec] | % of total value per category (stocks, crypto) |
-| `sectorExposure` | Holding values. Sectors: FMP (US stocks only, free plan) | — | % of total value per sector |
-| `diversification` | Holding weights and sectors | [DOJ HHI][hhi], [UCITS Article 52][ucits], [SEC Investor.gov][sec] | HHI with DOJ bands; largest positions checked against 5/10/40 limits; spread between and within categories |
-| `riskTolerance` | Questionnaire answers | [ESMA MiFID II suitability guidelines][mifidg] | Level from answers grouped into knowledge and experience, financial situation, investment objectives. **Point scoring is Assetlume's own** |
-| `portfolioRisk` | Price history: FMP, CoinGecko | [CESR/ESMA 10-673 (SRRI)][srri] | Annualised volatility from weekly returns over 5 years, placed in class 1–7 |
-| `riskComparison` | `riskTolerance` + `portfolioRisk` | [MiFID II Article 25][mifid25] | Whether the risk class is within, above or below the tolerance. **The level-to-class mapping is Assetlume's own** |
-| `valuesAlignment` | Holding values; values rules (seed file) | Assetlume's documented rules | Flagged / not flagged / not assessed shares |
-| `environmentalImpact` | Seed file from company reports (no free source) | SFDR Delegated Regulation (EU) 2022/1288, Annex I ([EUR-Lex][eurlex]) | Value-weighted figures, e.g. GHG emissions, carbon footprint |
-| `socialImpact` | Seed file from company reports (no free source) | SFDR Delegated Regulation (EU) 2022/1288, Annex I ([EUR-Lex][eurlex]) | Value-weighted figures, e.g. board gender diversity, gender pay gap |
-| `aiSuggestions` | Assetlume's calculated results | — | Plain-language observations and things to learn about; never what to buy, sell or hold |
-| `portfolioSummary` | All items above | — | Short overview card; no new calculations |
-
-[sec]: https://www.investor.gov/introduction-investing/investing-basics/glossary/beginners-guide-asset-allocation-diversification-and-rebalancing
-[hhi]: https://www.justice.gov/atr/herfindahl-hirschman-index
-[ucits]: https://www.esma.europa.eu/publications-and-data/interactive-single-rulebook/ucits/article-52
-[mifidg]: https://www.esma.europa.eu/node/101543
-[srri]: https://www.esma.europa.eu/sites/default/files/library/2015/11/10_673.pdf
-[mifid25]: https://www.esma.europa.eu/publications-and-data/interactive-single-rulebook/mifid-ii/article-25-assessment-suitability-and
-[eurlex]: https://eur-lex.europa.eu
+The item-by-item table (inputs, data source, method source and what Assetlume calculates) is in [`docs/architecture.md`](docs/architecture.md), section 7.0.
 
 ### Key rules in short
 
