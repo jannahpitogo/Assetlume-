@@ -67,6 +67,7 @@ The app tracks:
 | D15 | **Scores use published thresholds and methods, not invented weights.** | Every number can be traced to a citable source. |
 | D16 | **The database schema is defined only by migrations.** | One source of truth. |
 | D17 | **Every dashboard item names its data source and its method source** (section 7.0). Where Assetlume adds its own choice (point scoring, level-to-class mapping), it is labelled as Assetlume's own. Borrowed methods are described as "based on", never as an official rating or assessment. | Visitors and reviewers can check where each number comes from. |
+| D18 | **The web app is rebuilt for Assetlume, not kept as investIQ.** investIQ is a reference for layout and components only. | Matches the TypeScript, server-side design. Answers Q16. |
 
 ---
 
