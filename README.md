@@ -8,7 +8,7 @@ Assetlume does **not** connect to any broker, exchange or wallet, in any version
 
 **Status:** early development. The design is described in [`docs/architecture.md`](docs/architecture.md) (Draft v0.3).
 
-> **Demo version.** For now, Assetlume runs as a demo with no login. The market data is real, fetched from live APIs (stock prices, crypto prices and currency rates). Each visitor enters their own holdings through the form in the questionnaire, and the dashboard analyses them with real prices.
+> **Demo version.** For now, Assetlume runs as a demo with no login, published online. The market data is real, fetched from live APIs (stock prices, crypto prices and currency rates). Each visitor enters their own holdings through the form in the questionnaire, and the dashboard analyses them with real prices.
 >
 > **Every visitor gets a private session.** Their questionnaire answers and portfolio belong to their browser only; no other visitor can see them. Data is deleted when they press **End session & delete my data** on the dashboard, or automatically **3 days after their last visit**. Because the session lives in the browser, clearing cookies or switching browser or device starts a new, empty session.
 >
@@ -46,7 +46,7 @@ Assetlume does **not** connect to any broker, exchange or wallet, in any version
 
 1. **Questionnaire:** five steps covering personal details, goals, comfort with risk, values and portfolio setup.
 2. **Portfolio entry (inside the questionnaire):** in the portfolio setup step, the person enters their own holdings through a form: pick an asset from the 300, then enter the quantity held and the average price paid (in USD). Holdings can be changed later on the Builder page.
-3. **Dashboard:** value and change, top holdings, asset allocation, sector exposure, diversification, risk tolerance, portfolio risk (class 1 to 7) and how the two compare, values alignment, environmental and social impact, AI suggestions and a summary. Every item names its data source and the published method it follows (see [Dashboard items](#dashboard-items)). It also has an **End session & delete my data** button.
+3. **Dashboard:** value and change, top holdings, asset allocation, sector exposure, diversification, risk tolerance, portfolio risk (class 1 to 7) and how the two compare, values alignment, environmental and social impact, AI insights and a summary. Every item names its data source and the published method it follows (see [Dashboard items](#dashboard-items)). It also has an **End session & delete my data** button.
 4. **Plain-language explanations:** optional AI-written summaries of the numbers. The AI never calculates anything. If it is unavailable, the dashboard shows the numbers on their own.
 5. **Display currency:** USD, EUR or any currency in the European Central Bank's reference rates (about 30). All maths is done in USD and converted only for display, with each currency's normal number of decimals (for example, none for JPY).
 
@@ -227,8 +227,8 @@ The item-by-item table (inputs, data source, method source and what Assetlume ca
 ### Key rules in short
 
 - **Diversification:** HHI below 1,000 is not concentrated, 1,000–1,800 moderately concentrated, above 1,800 highly concentrated. Holdings above 10% are flagged, and holdings between 5% and 10% are checked against a combined 40%.
-- **Portfolio risk:** weekly returns (week ending Friday) over 5 years, annualised with √52, placed in the SRRI bands: 1 (0–0.5%), 2 (0.5–2%), 3 (2–5%), 4 (5–10%), 5 (10–15%), 6 (15–25%), 7 (25% and above). The period actually used is always shown.
-- **Risk comparison:** proposed mapping conservative 1–4, moderate 5, growth 6, aggressive 7. The screen says only "within, above or below", never "suitable".
+- **Portfolio risk:** weekly returns (week ending Friday) over 5 years, annualised with √52, placed in the SRRI bands: 1 (0–0.5%), 2 (0.5–2%), 3 (2–5%), 4 (5–10%), 5 (10–15%), 6 (15–25%), 7 (25% and above). If a holding has less than 5 years of history, the longest period all holdings share is used (minimum 1 year). The period actually used is always shown.
+- **Risk comparison:** mapping conservative 1–4, moderate 5, growth 6, aggressive 7. The screen says only "within, above or below", never "suitable".
 - **Impact:** every figure carries its company, reporting year and source link; coverage is always shown, and missing data is never counted as zero.
 
 ## Swapping data providers
@@ -320,7 +320,7 @@ All addresses start with `/api`.
 | `GET/POST/PUT/DELETE /api/portfolio/holdings` | Manage holdings |
 | `GET /api/portfolio/analysis` | All dashboard items, with their sources and data-quality warnings |
 | `GET /api/portfolio/history` | "What if" history: today's holdings applied to past prices |
-| `GET /api/portfolio/insights` | AI suggestions, or "unavailable" |
+| `GET /api/portfolio/insights` | AI insights, or "unavailable" |
 | `GET /api/meta/data-status` | When each update last ran, data-source credits and method sources |
 
 ## Testing
@@ -386,4 +386,4 @@ Steps 2 and 3 can run in parallel. Step 6 can start during step 5.
 
 ## License
 
-_To decide._
+All rights reserved. The code is not licensed for reuse.

@@ -16,7 +16,7 @@ The app tracks:
 - **150 cryptocurrencies**, the largest by market value. Stablecoins are included.
 - **No foreign currencies (Forex) as investments.** Currency conversion is only used to show amounts in the visitor's chosen currency.
 
-**Demo version:** no login. Every visitor gets a private session (section 11.1). Market data is real. Later versions will add accounts and file upload (section 16).
+**Demo version:** no login, published online. Every visitor gets a private session (section 11.1). Market data is real. Before going online, the privacy note, rate limits and provider display rules are checked (Step 10). Later versions will add accounts and file upload (section 16).
 
 ---
 
@@ -116,9 +116,9 @@ If fewer than 150 assets pass the rules for one list, that list is shorter, and 
 
 Each stock needs at least: ticker, company name, company ID (CIK), sector, industry, current price and market value.
 
-**Rules for choosing the 150 (proposal, to confirm):**
+**Rules for choosing the 150:**
 
-1. Start from a list of about 200 large US companies from a public index. The source and date are written at the top of the file.
+1. Ask FMP for about 200 of the largest US companies, ranked by market value. This pool is refreshed weekly, with the stock list (5.4).
 2. Look up each company's details from the stock provider.
 3. Include it only if it is a US company listed on NYSE, NASDAQ or AMEX, is an operating company (not an ETF or fund), is actively trading, and has a known market value and price.
 4. If a company has more than one share class, keep only the most traded one.
@@ -137,15 +137,15 @@ Each stock needs at least: ticker, company name, company ID (CIK), sector, indus
 | Data | Provider (adapter) |
 |---|---|
 | US stock details, company IDs, sectors, prices and price history | **Financial Modeling Prep (FMP)** — https://site.financialmodelingprep.com/api/pricing-md |
-| Crypto details, prices and price history | **CoinGecko** (unchanged from v0.2; see Q19) |
+| Crypto details, prices and price history | **CoinGecko** (unchanged from v0.2) |
 | Exchange rates | **European Central Bank (ECB)** euro foreign exchange reference rates — http://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.en.html |
 | Environmental and social figures | **Seed file** built by hand from company reports (no free source) |
-| AI text (optional) | AI provider, to choose (Q11) |
+| AI text (optional) | AI provider: a small, low-cost model (see 11) |
 
 **To check in Step 3:**
 
 - FMP free plan: sector and industry for US stocks, CIK, and **5 years** of price history.
-- CoinGecko free plan: whether **5 years** of price history is available. If history is limited, crypto risk uses what is available (Q20).
+- CoinGecko free plan: whether **5 years** of price history is available. If history is limited, crypto risk uses what is available (see 7.8).
 - ECB: the daily file and the full history file both load and parse.
 
 **Notes on the ECB rates:** the ECB publishes reference rates for about 30 currencies against the euro, once a day on working days. Assetlume works in USD, so each rate is converted: USD to X = (EUR to X) ÷ (EUR to USD), and USD to EUR = 1 ÷ (EUR to USD), using exact decimals. Days without a rate (weekends, holidays) use the previous published rate, with its date shown. Full history is available from the ECB, so past rates are no problem.
@@ -216,10 +216,10 @@ Everything is calculated on the server (D11). Each item names where its inputs c
 | `riskTolerance` | Questionnaire answers | ESMA guidelines on MiFID II suitability requirements | Risk level from answers grouped into knowledge and experience, financial situation, and investment objectives. **Point scoring is Assetlume's own** |
 | `portfolioRisk` | Price history: FMP, CoinGecko | CESR/ESMA 10-673 (SRRI) | Annualised volatility from weekly returns over 5 years, placed in risk class 1–7 |
 | `riskComparison` | `riskTolerance` + `portfolioRisk` | MiFID II Article 25 (assessment of suitability) | Whether the portfolio's risk class is within, above or below the visitor's tolerance. **The level-to-class mapping is Assetlume's own** |
-| `valuesAlignment` | Holding values; values rules (seed file) | Assetlume's documented rules (D8) | Flagged / not flagged / not assessed shares (kept from v0.2; see Q21) |
+| `valuesAlignment` | Holding values; values rules (seed file) | Assetlume's documented rules (D8) | Flagged / not flagged / not assessed shares (kept from v0.2) |
 | `environmentalImpact` | Seed file from company reports | SFDR Delegated Regulation (EU) 2022/1288, Annex I | Value-weighted portfolio figures for environmental indicators (for example GHG emissions, carbon footprint) |
 | `socialImpact` | Seed file from company reports | SFDR Delegated Regulation (EU) 2022/1288, Annex I | Value-weighted portfolio figures for social indicators (for example board gender diversity, gender pay gap) |
-| `aiSuggestions` | Assetlume's calculated results | — | Plain-language observations and things to learn more about (7.11) |
+| `aiInsights` | Assetlume's calculated results | — | Plain-language observations and things to learn more about (7.12) |
 | `portfolioSummary` | All items above | — | A short overview card built from the items above |
 
 **Method source links:**
@@ -309,29 +309,29 @@ Following CESR/ESMA 10-673:
 
 5. **Largest fall** (biggest drop from a peak) over the same period is shown as well.
 
-**Shorter history:** many coins and some stocks have less than 5 years of prices, and free plans may limit history. The rule for that case is open (Q20). The screen always states the period actually used.
+**Shorter history:** many coins and some stocks have less than 5 years of prices, and free plans may limit history. The rule: use the longest period all holdings share, with a minimum of 1 year (52 weeks). Below 1 year, the screen shows "not enough history" instead of a risk class. The screen always states the period actually used.
 
 ### 7.9 riskComparison
 
-- The visitor's level from `riskTolerance` is mapped to a range of SRRI classes. **The mapping is Assetlume's own** (Q7). Proposal: conservative 1–4, moderate 5, growth 6, aggressive 7.
+- The visitor's level from `riskTolerance` is mapped to a range of SRRI classes. **The mapping is Assetlume's own:** conservative 1–4, moderate 5, growth 6, aggressive 7.
 - The screen says whether the portfolio's class is **within, above or below** that range.
 - It never says an investment is suitable or unsuitable, never predicts losses, and never says what to change.
 
 **Shown with the result:** "The comparison is modelled on the risk check in MiFID II Article 25. It is not a suitability assessment."
 
-### 7.10 valuesAlignment (kept from v0.2, see Q21)
+### 7.10 valuesAlignment (kept from v0.2)
 
-If the visitor wants to avoid something, the dashboard shows three shares: **Flagged**, **Not flagged** and **Not assessed**. Flags come from documented industry rules, a few manually reviewed companies (each with source and date), and each coin's documented consensus method. Starting topics: fossil fuels, tobacco, weapons and defence, gambling, alcohol, crypto energy use (Q9). The screen says: *"Based on industry type and limited manual review. Not an ESG rating. May be incomplete."*
+If the visitor wants to avoid something, the dashboard shows three shares: **Flagged**, **Not flagged** and **Not assessed**. Flags come from documented industry rules, a few manually reviewed companies (each with source and date), and each coin's documented consensus method. Starting topics: fossil fuels, tobacco, weapons and defence, gambling, alcohol, crypto energy use. The screen says: *"Based on industry type and limited manual review. Not an ESG rating. May be incomplete."*
 
 ### 7.11 environmentalImpact and socialImpact
 
-- **Indicators:** taken from the mandatory principal adverse impact indicators in SFDR Delegated Regulation (EU) 2022/1288, Annex I. Environmental examples: GHG emissions, carbon footprint. Social examples: board gender diversity, unadjusted gender pay gap. The exact list for this version is open (Q22).
+- **Indicators:** taken from the mandatory principal adverse impact indicators in SFDR Delegated Regulation (EU) 2022/1288, Annex I. Environmental examples: GHG emissions, carbon footprint. Social examples: board gender diversity, unadjusted gender pay gap. For this version: two environmental indicators (GHG emissions, carbon footprint) and two social indicators (board gender diversity, gender pay gap), for the largest stocks first, using one reporting year. Coverage is shown on the dashboard.
 - **Data:** no free source exists, so figures are entered by hand in a seed file (`api/seed/impact/`) from each company's own reports. Every figure records the company, indicator, value, unit, reporting year and source link.
 - **Calculation:** each indicator follows the Annex I formula, applied to the visitor's holdings and weighted by value. For example, the carbon footprint relates each company's emissions to the share of the company the visitor holds, per million invested.
 - **Coverage:** each figure is shown with the share of the portfolio it covers. Holdings without data, and all coins, are "not covered", never counted as zero.
 - **Shown with the result:** "Based on company-reported figures for the year shown, using EU SFDR indicator definitions. Not an ESG rating. Covers X% of your portfolio."
 
-### 7.12 aiSuggestions
+### 7.12 aiInsights
 
 - Input: the calculated results and simple labels only, never free text or the visitor's name.
 - Output: plain-language observations and things to learn more about. For example: "Over half of your portfolio is in one holding. The diversification card explains why that matters."
@@ -345,6 +345,8 @@ A short overview card at the top of the dashboard built only from the items abov
 
 ### 7.14 How the calculations are tested
 
+All calculations are written for this version. The investIQ calculation code is not available to compare against, so the hand-worked cases below are the check.
+
 Hand-worked test cases for: one holding, several holdings, a missing price, zero cost, an empty portfolio, a missing sector, a missing exchange rate, the edges of every HHI, 5/10/40 and SRRI band, weekly returns across a US holiday, a coin with less than 5 years of history, an impact indicator with partial coverage, and EUR-based to USD-based rate conversion.
 
 ---
@@ -357,7 +359,7 @@ Hand-worked test cases for: one holding, several holdings, a missing price, zero
 4. Each currency is shown with its normal number of decimals (for example, none for JPY).
 5. Rates are saved with their date and source.
 6. If a rate is missing, the app shows USD with a clear note. It never shows a made-up converted amount.
-7. The price paid must be entered in USD for this version (Q5).
+7. The price paid must be entered in USD for this version. Other currencies would need the purchase date and a past exchange rate.
 
 ---
 
@@ -406,7 +408,7 @@ Deleting a session deletes its portfolio, answers, holdings and AI text in one s
 - **Be clear about what the app is.** Welcome screen, footer and dashboard: *"Educational analysis only. No buying, selling or trading. Not financial advice."* No buy or sell buttons anywhere.
 - **Borrowed methods are labelled as borrowed.** MiFID II, UCITS, SRRI, HHI and SFDR are described as "based on" or "modelled on". Assetlume never claims to perform a suitability assessment or to give an official rating.
 - **Keep the AI in check** (7.12).
-- **Limit cost and abuse.** AI calls are capped per day and per session. New sessions per network address are rate-limited.
+- **Limit cost and abuse.** The AI is a small, low-cost model. AI calls are capped per day and per session; exact caps are set in Step 9. New sessions per network address are rate-limited.
 - **Collect the minimum.** Financial situation only in ranges; no required name; no free text; no account numbers.
 - **Privacy note.** Says what is stored, for how long, and how to delete it.
 
@@ -418,7 +420,7 @@ Deleting a session deletes its portfolio, answers, holdings and AI text in one s
 4. Each visit updates "last seen".
 5. Data is deleted:
    - **by the visitor,** with **End session & delete my data** on the dashboard (also in Settings), after a confirmation; the cookie is cleared;
-   - **automatically,** 3 days after the last visit (hourly clean-up; see Q15).
+   - **automatically,** 3 days after the last visit (hourly clean-up).
 
 Visitors are told: the portfolio stays only in this browser; clearing cookies, switching browser or device, or private browsing starts an empty session; anyone using the same browser can see it.
 
@@ -473,7 +475,7 @@ All outside services live in `api/src/providers/`, one folder per provider, unde
 | Holdings | `GET/POST/PUT/DELETE /api/portfolio/holdings` |
 | All dashboard items, with sources and warnings | `GET /api/portfolio/analysis` |
 | "What if" history | `GET /api/portfolio/history` |
-| AI suggestions, or "unavailable" | `GET /api/portfolio/insights` |
+| AI insights, or "unavailable" | `GET /api/portfolio/insights` |
 | Update times, data-source credits and method sources | `GET /api/meta/data-status` |
 
 ---
@@ -492,7 +494,7 @@ All outside services live in `api/src/providers/`, one folder per provider, unde
 - Attribution and display rules for each.
 - Does the whole plan fit within the daily limits, including the one-off 5-year download?
 
-**What the result decides:** if stocks are blocked on the free plan, choose a smaller list, a paid plan (a settings change thanks to D6), or another provider (one new adapter). If history is shorter than 5 years, apply the Q20 rule.
+**What the result decides:** if stocks are blocked on the free plan, choose a smaller list, a paid plan (a settings change thanks to D6), or another provider (one new adapter). If history is shorter than 5 years, apply the shorter-history rule in 7.8.
 
 **Step 4. Asset list.** The 300 assets, provider ID mapping, Explorer page.
 
@@ -504,7 +506,7 @@ All outside services live in `api/src/providers/`, one folder per provider, unde
 
 **Step 8. Dashboard.** All cards, the method page, freshness and source labels.
 
-**Step 9. Values, impact and AI.** Values rules; impact seed file and calculations; AI suggestions with checks and fallback; portfolio summary.
+**Step 9. Values, impact and AI.** Values rules; impact seed file and calculations; AI insights with checks and fallback; portfolio summary.
 
 **Step 10. Final checks.** Test gaps, known limits, privacy note, provider rules re-checked, demo prepared.
 
@@ -523,9 +525,9 @@ All open questions are kept in a separate file, [`open-questions.md`](open-quest
 | Risk | Likely / serious | What we do |
 |---|---|---|
 | The free stock plan blocks some stocks | High / High | Step 3 test, then the three options; switching is cheap thanks to D6 |
-| Less than 5 years of price history (free plans, young coins) | High / Medium | Q20 rule; the period used is always shown |
+| Less than 5 years of price history (free plans, young coins) | High / Medium | Shorter-history rule (7.8); the period used is always shown |
 | The free daily limit is too small for the 5-year download | Medium / Medium | Spread the one-off download over several days |
-| Collecting impact figures by hand takes too long | High / Medium | Limit indicators and companies for this version (Q22); show coverage honestly |
+| Collecting impact figures by hand takes too long | High / Medium | Limit indicators and companies for this version (7.11); show coverage honestly |
 | Impact figures are old or inconsistent between companies | Medium / Medium | Reporting year and source on every figure |
 | A provider's rules don't allow showing its data | Medium / High | Check in Step 3, ask in writing, or demo with recorded data |
 | Visitors read the risk check as a suitability assessment | Medium / High | "Modelled on", "not a suitability assessment" wording on every related card |
