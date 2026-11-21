@@ -65,7 +65,7 @@ export function WelcomePage() {
       <main id="main">
         <section className="hero">
           <div className="container hero-inner">
-            <h1 className="hero-title">ASSETLUME</h1>
+            <span>Built for retail investors</span>
             <h2 className="motto">Know what you own, in plain language.</h2>
             <p className="lead">
               Type in the stocks and coins you already hold. Assetlume shows what they are worth, how
@@ -74,6 +74,17 @@ export function WelcomePage() {
             <div className="hero-actions">
               <a className="button button-primary" href={QUESTIONNAIRE_PATH}>
                 Start the questionnaire
+                <span className="button-arrow" aria-hidden="true">
+                  <svg viewBox="0 0 16 16" fill="none">
+                    <path
+                      stroke="#fff"
+                      strokeWidth="1.333"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M3.333 8h9.333M8 3.333 12.667 8 8 12.666"
+                    />
+                  </svg>
+                </span>
               </a>
               <a className="button button-secondary" href="#how-it-works">
                 How it works
