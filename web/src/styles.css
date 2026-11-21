@@ -165,21 +165,40 @@ a {
 
 .hero {
   padding: 72px 0 64px;
+  text-align: center;
 }
 
 .hero-inner {
   max-width: 760px;
+  margin: 0 auto;
+}
+
+.hero-title {
+  font-size: clamp(3rem, 11vw, 6rem);
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  margin: 0 0 16px;
+}
+
+.motto {
+  font-size: clamp(1.25rem, 3vw, 1.75rem);
+  font-weight: 500;
+  color: var(--text);
+  margin: 0 0 24px;
 }
 
 .lead {
   font-size: 1.1875rem;
   color: var(--text-muted);
   max-width: 620px;
+  margin: 0 auto;
 }
 
 .hero-actions {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 12px;
   margin: 28px 0 24px;
 }
@@ -219,8 +238,9 @@ a {
   display: inline-block;
   font-size: 0.9375rem;
   color: var(--text-muted);
-  border-left: 3px solid var(--glow);
-  padding: 4px 0 4px 12px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 6px 16px;
   margin: 0;
 }
 

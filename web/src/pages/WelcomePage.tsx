@@ -65,10 +65,11 @@ export function WelcomePage() {
       <main id="main">
         <section className="hero">
           <div className="container hero-inner">
-            <h1>Understand the investments you already hold.</h1>
+            <h1 className="hero-title">ASSETLUME</h1>
+            <h2 className="motto">Know what you own, in plain language.</h2>
             <p className="lead">
-              Type in your stocks and coins. Assetlume shows what your portfolio is worth, how it is
-              spread and how risky it looks, all explained in plain language.
+              Type in the stocks and coins you already hold. Assetlume shows what they are worth, how
+              they are spread and how risky they look.
             </p>
             <div className="hero-actions">
               <a className="button button-primary" href={QUESTIONNAIRE_PATH}>
