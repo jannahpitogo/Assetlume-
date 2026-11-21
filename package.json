@@ -1,0 +1,12 @@
+{
+  "name": "assetlume",
+  "private": true,
+  "workspaces": [
+    "web"
+  ],
+  "scripts": {
+    "dev": "npm run dev -w web",
+    "build": "npm run build -w web",
+    "typecheck": "npm run typecheck -w web"
+  }
+}
