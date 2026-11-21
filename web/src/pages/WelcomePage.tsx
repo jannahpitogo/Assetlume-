@@ -68,8 +68,7 @@ export function WelcomePage() {
             <span>Built for retail investors</span>
             <h2 className="motto">Know what you own, in plain language.</h2>
             <p className="lead">
-              Type in the stocks and coins you already hold. Assetlume shows what they are worth, how
-              they are spread and how risky they look.
+              Bring your stocks and coins together in one view, and finally understand what they’re worth, where your money is, and how much risk you’re taking.
             </p>
             <div className="hero-actions">
               <a className="button button-primary" href={QUESTIONNAIRE_PATH}>
