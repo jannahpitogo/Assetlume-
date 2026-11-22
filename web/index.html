@@ -8,6 +8,15 @@
       content="Assetlume helps beginners understand the stocks and coins they already hold. Educational analysis only. Not financial advice."
     />
     <title>Assetlume</title>
+    <script>
+      // Apply a saved light/dark choice before the page paints, to avoid a flash.
+      try {
+        var saved = localStorage.getItem('assetlume-theme');
+        if (saved === 'light' || saved === 'dark') {
+          document.documentElement.setAttribute('data-theme', saved);
+        }
+      } catch (e) {}
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
